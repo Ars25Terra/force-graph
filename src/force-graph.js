@@ -132,9 +132,14 @@ export default Kapsule({
         function hexIndex({ type, objs }) {
           objs
             .filter(d => {
-              if (!d.hasOwnProperty('__indexColor')) return true;
-              const cur = state.colorTracker.lookup(d.__indexColor);
-              return (!cur || !cur.hasOwnProperty('d') || cur.d !== d);
+              if (!d.hasOwnProperty('__indexColor') || d.__indexColor === null) return true;
+              try {
+                const cur = state.colorTracker.lookup(d.__indexColor);
+                return (!cur || !cur.hasOwnProperty('d') || cur.d !== d);
+              } catch (e) {
+                console.log(e);
+                return true;
+              }
             })
             .forEach(d => {
               // store object lookup color
